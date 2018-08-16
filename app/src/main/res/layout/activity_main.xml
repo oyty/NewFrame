@@ -1,29 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/transparent"
-    tools:context=".MainActivity">
-
-    <FrameLayout
-        android:id="@+id/mContentLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="@dimen/x100"/>
-
-    <com.oyty.newframe.widget.bottombar.BottomBar
-        android:id="@+id/mBottomBar"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/x100"
-        android:layout_gravity="bottom"/>
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:layout_marginBottom="@dimen/x100"
-        android:background="@drawable/actionbar_shadow_up"/>
-
-</FrameLayout>
+    tools:context=".MainActivity"
+    android:id="@+id/mMainContainer"/>

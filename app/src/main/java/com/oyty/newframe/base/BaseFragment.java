@@ -9,8 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.oyty.newframe.R;
-import com.oyty.newframe.ui.fragment.HomeFragment;
+import com.oyty.newframe.ui.fragment.main.HomeFragment;
 import com.oyty.newframe.widget.custom.PublicTitleView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -36,6 +35,7 @@ public abstract class BaseFragment extends SupportFragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        mContext = context;
         if(context instanceof OnBackToFirstListener) {
             backToFirstListener = (OnBackToFirstListener) context;
         } else {

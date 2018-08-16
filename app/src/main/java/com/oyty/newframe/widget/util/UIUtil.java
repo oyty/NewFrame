@@ -6,7 +6,8 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.DisplayMetrics;
 
-import com.flash.coupon.base.App;
+import com.oyty.newframe.base.App;
+
 
 public class UIUtil {
 

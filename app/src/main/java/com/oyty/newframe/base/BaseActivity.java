@@ -33,7 +33,6 @@ public abstract class BaseActivity extends SupportActivity implements BaseFragme
         mContext = this;
         initBeforeSetView();
         setContentView(initViewID());
-        AndroidBugUtil.assistActivity(findViewById(android.R.id.content));
         ButterKnife.bind(this);
         AppManager.getAppManager().addActivity(this);
         if (registerEventBus()) {

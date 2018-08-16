@@ -77,6 +77,14 @@ public class BottomBar extends LinearLayout {
         return this;
     }
 
+    /**
+     * 获取 Tab
+     */
+    public BottomBarTab getItem(int index) {
+        if (tabs.size() < index) return null;
+        return tabs.get(index);
+    }
+
     private void toggle(final boolean visible, final boolean animate, boolean force) {
         if(isVisible != visible || force) {
             isVisible = visible;
