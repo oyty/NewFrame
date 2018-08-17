@@ -2,6 +2,8 @@ package com.oyty.newframe.widget.bottombar;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
@@ -11,6 +13,8 @@ import android.view.ViewTreeObserver;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Interpolator;
 import android.widget.LinearLayout;
+
+import com.oyty.newframe.widget.util.UIUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -115,6 +119,63 @@ public class BottomBar extends LinearLayout {
                 setTranslationY(translationY);
             }
         }
+    }
+
+    @Override
+    protected Parcelable onSaveInstanceState() {
+        Parcelable superState = super.onSaveInstanceState();
+        return new SavedState(superState, currentPosition);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Parcelable state) {
+        SavedState ss = (SavedState) state;
+        super.onRestoreInstanceState(ss.getSuperState());
+
+        if (currentPosition != ss.position) {
+            getChildAt(currentPosition).setSelected(false);
+            getChildAt(ss.position).setSelected(true);
+        }
+        currentPosition = ss.position;
+    }
+
+    static class SavedState extends BaseSavedState {
+        private int position;
+
+        public SavedState(Parcel source) {
+            super(source);
+            position = source.readInt();
+        }
+
+        public SavedState(Parcelable superState, int position) {
+            super(superState);
+            this.position = position;
+        }
+
+        @Override
+        public void writeToParcel(Parcel out, int flags) {
+            super.writeToParcel(out, flags);
+            out.writeInt(position);
+        }
+
+        public static final Parcelable.Creator<SavedState> CREATOR = new Parcelable.Creator<SavedState>() {
+            public SavedState createFromParcel(Parcel in) {
+                return new SavedState(in);
+            }
+
+            public SavedState[] newArray(int size) {
+                return new SavedState[size];
+            }
+        };
+    }
+
+    public void setCurrentItem(final int position) {
+        UIUtil.post(new Runnable() {
+            @Override
+            public void run() {
+                getChildAt(position).performClick();
+            }
+        });
     }
 
     public void setOnTabSelectedListener(OnTabSelectedListener listener) {

@@ -24,5 +24,8 @@ public class LoginFragment extends BaseFragment {
 
     }
 
-
+    @Override
+    protected boolean enableSwipeBack() {
+        return true;
+    }
 }

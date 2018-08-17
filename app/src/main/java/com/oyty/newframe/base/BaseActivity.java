@@ -25,7 +25,6 @@ public abstract class BaseActivity extends SupportActivity implements BaseFragme
 
     protected Context mContext;
     private PublicTitleView mTitleView;
-    private QMUITipDialog mLoadingDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -33,11 +32,7 @@ public abstract class BaseActivity extends SupportActivity implements BaseFragme
         mContext = this;
         initBeforeSetView();
         setContentView(initViewID());
-        ButterKnife.bind(this);
         AppManager.getAppManager().addActivity(this);
-        if (registerEventBus()) {
-            EventBus.getDefault().register(this);
-        }
         initTitleView();
         initTitleBar(mTitleView);
         initView();
@@ -69,11 +64,6 @@ public abstract class BaseActivity extends SupportActivity implements BaseFragme
 
     protected abstract void process();
 
-
-    public boolean registerEventBus() {
-        return false;
-    }
-
     @Override
     public void onBackToFirstFragment() {
 
@@ -83,34 +73,9 @@ public abstract class BaseActivity extends SupportActivity implements BaseFragme
     protected void onDestroy() {
         CommonUtil.fixInputMethodManagerLeak(this);
         AppManager.getAppManager().finishActivity(this);
-        if (registerEventBus()) {
-            EventBus.getDefault().unregister(this);
-        }
         super.onDestroy();
     }
 
-    public void showProgressDialog() {
-        try {
-            View currentFocus = getCurrentFocus();
-            QMUIKeyboardHelper.hideKeyboard(currentFocus);
-        } catch (Exception ignored) {
-        }
-        if (mLoadingDialog == null) {
-            mLoadingDialog = new QMUITipDialog.Builder(mContext)
-                    .setIconType(QMUITipDialog.Builder.ICON_TYPE_LOADING)
-                    .setTipWord(UIUtil.getString(R.string.loading))
-                    .create();
-        }
-        if (!mLoadingDialog.isShowing()) {
-            mLoadingDialog.show();
-        }
-    }
-
-    public void dismissProgressDialog() {
-        if (mLoadingDialog != null && mLoadingDialog.isShowing() && !isFinishing()) {
-            mLoadingDialog.dismiss();
-        }
-    }
 
     public PublicTitleView getTitleView() {
         return mTitleView;

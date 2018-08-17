@@ -5,7 +5,7 @@ import android.support.annotation.Nullable;
 
 import com.oyty.newframe.R;
 import com.oyty.newframe.base.BaseFragment;
-import com.oyty.newframe.event.TabSelectedEvent;
+import com.oyty.newframe.event.TabReSelectedEvent;
 import com.oyty.newframe.widget.bottombar.BottomBar;
 import com.oyty.newframe.widget.bottombar.BottomBarTab;
 
@@ -65,9 +65,9 @@ public class MainFragment extends BaseFragment {
     }
 
     private void initBottomBar() {
-        mBottomBar.addItem(new BottomBarTab(mContext, R.drawable.choice_test, "超级券"))
-                .addItem(new BottomBarTab(mContext, R.drawable.search_test, "超级搜"))
-                .addItem(new BottomBarTab(mContext, R.drawable.my_test, "我的"));
+        mBottomBar.addItem(new BottomBarTab(_mActivity, R.drawable.choice_test, "超级券"))
+                .addItem(new BottomBarTab(_mActivity, R.drawable.search_test, "超级搜"))
+                .addItem(new BottomBarTab(_mActivity, R.drawable.my_test, "我的"));
 
         mBottomBar.getItem(0).setUnreadCount(2);
 
@@ -84,7 +84,7 @@ public class MainFragment extends BaseFragment {
 
             @Override
             public void onTabReselected(int position) {
-                EventBusActivityScope.getDefault(_mActivity).post(new TabSelectedEvent(position));
+                EventBusActivityScope.getDefault(_mActivity).post(new TabReSelectedEvent(position));
             }
         });
     }

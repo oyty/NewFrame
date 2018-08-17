@@ -9,28 +9,34 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.oyty.newframe.R;
 import com.oyty.newframe.ui.fragment.main.HomeFragment;
 import com.oyty.newframe.widget.custom.PublicTitleView;
+import com.oyty.newframe.widget.util.UIUtil;
+import com.qmuiteam.qmui.util.QMUIKeyboardHelper;
+import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
 
 import org.greenrobot.eventbus.EventBus;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import me.yokeyword.eventbusactivityscope.EventBusActivityScope;
 import me.yokeyword.fragmentation.SupportFragment;
+import me.yokeyword.fragmentation_swipeback.SwipeBackFragment;
 
 /**
  * Created by oyty on 2018/8/15.
+ * 若要使用activity，可直接使用 {@link #_mActivity}
  */
-public abstract class BaseFragment extends SupportFragment {
+public abstract class BaseFragment extends SwipeBackFragment {
 
     private OnBackToFirstListener backToFirstListener;
 
     protected Context mContext;
-    protected FragmentActivity activity;
     protected View mView;
     private PublicTitleView mTitleView;
     private Unbinder unbinder;
-    private View mProgressView;
+    private QMUITipDialog mLoadingDialog;
 
     @Override
     public void onAttach(Context context) {
@@ -47,7 +53,7 @@ public abstract class BaseFragment extends SupportFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (registerEventBus()) {
-            EventBus.getDefault().register(this);
+            EventBusActivityScope.getDefault(_mActivity).register(this);
         }
     }
 
@@ -61,7 +67,7 @@ public abstract class BaseFragment extends SupportFragment {
         initView();
         initViewListener();
         process();
-        return mView;
+        return enableSwipeBack() ? attachToSwipeBack(mView) : mView;
     }
 
     public void initTitleBar(PublicTitleView titleView) {
@@ -85,6 +91,10 @@ public abstract class BaseFragment extends SupportFragment {
     }
 
 
+    protected boolean enableSwipeBack() {
+        return false;
+    }
+
     public boolean registerEventBus() {
         return false;
     }
@@ -101,7 +111,7 @@ public abstract class BaseFragment extends SupportFragment {
         super.onDestroyView();
         unbinder.unbind();
         if (registerEventBus()) {
-            EventBus.getDefault().unregister(this);
+            EventBusActivityScope.getDefault(_mActivity).unregister(this);
         }
     }
 
@@ -110,13 +120,27 @@ public abstract class BaseFragment extends SupportFragment {
     }
 
     public void showProgressDialog() {
-        ((BaseActivity) mContext).showProgressDialog();
+        try {
+            View currentFocus = _mActivity.getCurrentFocus();
+            QMUIKeyboardHelper.hideKeyboard(currentFocus);
+        } catch (Exception ignored) {
+        }
+        if (mLoadingDialog == null) {
+            mLoadingDialog = new QMUITipDialog.Builder(_mActivity)
+                    .setIconType(QMUITipDialog.Builder.ICON_TYPE_LOADING)
+                    .setTipWord(UIUtil.getString(R.string.loading))
+                    .create();
+        }
+        if (!mLoadingDialog.isShowing()) {
+            mLoadingDialog.show();
+        }
     }
 
     public void dismissProgressDialog() {
-        ((BaseActivity) mContext).dismissProgressDialog();
+        if (mLoadingDialog != null && mLoadingDialog.isShowing() && !_mActivity.isFinishing()) {
+            mLoadingDialog.dismiss();
+        }
     }
-
 
     /**
      * 处理回退事件

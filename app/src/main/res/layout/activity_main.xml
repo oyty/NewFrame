@@ -1,7 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity"
-    android:id="@+id/mMainContainer"/>
+    android:layout_height="match_parent">
+
+    <FrameLayout
+        android:id="@+id/mContentLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="52dp" />
+
+    <com.oyty.newframe.widget.bottombar.BottomBar
+        android:id="@+id/mBottomBar"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:layout_gravity="bottom"/>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="52dp"
+        android:background="@drawable/actionbar_shadow_up"/>
+
+</FrameLayout>
