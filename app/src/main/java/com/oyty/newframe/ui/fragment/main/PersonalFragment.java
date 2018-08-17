@@ -31,18 +31,18 @@ public class PersonalFragment extends BaseFragment {
     @OnClick(R.id.mLoginAction)
     public void loginAction() {
 
-        showProgressDialog();
-        UIUtil.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                dismissProgressDialog();
-            }
-        }, 5000);
+//        showProgressDialog();
+//        UIUtil.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                dismissProgressDialog();
+//            }
+//        }, 5000);
 //        EventBusActivityScope.getDefault(_mActivity).post(new TestEvent());
 
-//        if (getParentFragment() != null) {
-//            ((MainFragment)getParentFragment()).startBrotherFragment(LoginFragment.newInstance());
-//        }
+        if (getParentFragment() != null) {
+            ((MainFragment)getParentFragment()).startBrotherFragment(LoginFragment.newInstance());
+        }
     }
 
 
